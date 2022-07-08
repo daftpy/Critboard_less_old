@@ -153,7 +153,7 @@ const SubmissionRow: React.FC<IProps> = ({submission}) => {
       </Description>
 
       <SubmissionDate>
-          {formatDistanceToNow(new Date(submission.submissionContent.createdAt))}
+          {formatDistanceToNow(new Date(submission.submissionContent.createdAt), {addSuffix: true})}
       </SubmissionDate>
 
       <SubmissionType>
