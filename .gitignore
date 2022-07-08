@@ -4,25 +4,31 @@
 node_modules/
 .pnp
 .pnp.js
+app/env
 
 # testing
-coverage/
-test-results/
+frontend/coverage
+frontend/test-results/
 playwright-report/
 playwright/.cache/
 example.spec.ts
 
+# mediafiles
+app/mediafiles/*
+!app/mediafiles/README.md
 
 # next.js
-.next/
-out/
+frontend/.next/
+frontend/out/
 
 # production
-build/
+frontend/build
 
 # misc
 .DS_Store
 *.pem
+db.sqlite3
+todo.txt
 
 # debug
 npm-debug.log*
@@ -32,9 +38,15 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env.dev
+.env.dev.db
 
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
+
+# python misc
+__pycache__
+*.pyc
