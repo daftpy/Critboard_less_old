@@ -17,6 +17,16 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./.env.dev.db
+  test:
+    container_name: test_server
+    build: ./app
+    command: python test_server.py
+    volumes:
+    - ./test_server:/user/src/test_server
+    ports:
+    - 8001:8001
+    env_file:
+      - ./.env.dev
 
 volumes:
   postgres_data:
