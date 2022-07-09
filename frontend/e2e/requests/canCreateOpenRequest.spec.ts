@@ -1,8 +1,12 @@
 import { test, expect, type Page } from '@playwright/test';
+import axios from 'axios'
 
 test.beforeEach(async ({ page }) => {
   await page.goto('http://localhost:3000/');
 });
+test.afterEach(async ({ page}) => {
+  await axios.get('http://localhost:8001/cmd\=python%20manage.py%20flush%20--no-input')
+})
 
 test.describe('A user can request feedback.', () => {
   test('user can create an open request', async ({ page }) => {
