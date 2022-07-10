@@ -16,11 +16,16 @@ This web app is targeted towards streamers who need a better solution for connec
 
 # Stack
 
-
 - Django (DRF)
 - Next.js
 - PostgreSQL
 - Docker
+
+# Services
+
+- Sendgrid
+- Stripe
+- Amazon S3 (optional)
 
 # Testing
 
