@@ -20,6 +20,6 @@ test.describe('A user can request feedback.', () => {
     // The user is taken to the requests page.
     await expect(page.locator('role=heading', {hasText: 'Open Requests'})).toBeVisible();
     await expect(page.url()).toBe('http://localhost:3000/requests');
-    // await expect(page.locator('text=Requested less than a minute ago')).toBeVisible();
+    await expect(page.locator('text=Requested less than a minute ago')).toBeVisible();
   })
 });
