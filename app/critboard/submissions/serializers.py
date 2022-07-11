@@ -31,9 +31,10 @@ class SubmissionRequestSerializer(serializers.Serializer):
 
 
 class FileSubmissionSerializer(serializers.Serializer):
-    title = serializers.CharField()
-    description = serializers.CharField()
+    title = serializers.CharField(min_length=6, max_length=48)
+    description = serializers.CharField(min_length=18, max_length=255)
     file = serializers.FileField()
+    permission = serializers.BooleanField(write_only=True)
     created_at = serializers.DateTimeField(required=False)
     request_id = serializers.UUIDField(required=False, write_only=True)
     
@@ -48,6 +49,13 @@ class FileSubmissionSerializer(serializers.Serializer):
         submission_request.submission_type = "file"
         submission_request.save()
         return file_submission
+
+    def validate_permission(self, value):
+        if value:
+            return value
+        else:
+            raise serializers.ValidationError("You must have permission to submit this content.")
+
 
 
 class LinkSubmissionSerializer(serializers.Serializer):

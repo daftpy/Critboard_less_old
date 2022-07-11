@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Error, ErrorWrapper } from "./TextInput";
 
 interface IProps {
   label?: string;
@@ -6,6 +7,7 @@ interface IProps {
   id: string;
   name?: string;
   setData: (inputData: Object) => void;
+  errors?: string[];
 }
 
 const DescriptionInput = styled.textarea`
@@ -25,7 +27,7 @@ const DescriptionInput = styled.textarea`
   }
 `
 
-const TextArea: React.FC<IProps> = ({label, placeholder, id, name, setData}) => {
+const TextArea: React.FC<IProps> = ({label, placeholder, id, name, setData, errors}) => {
   const setInput = (e: React.ChangeEvent) => {
     let value = (e.currentTarget as HTMLInputElement).value;
     setData({[id]: value});
@@ -35,6 +37,16 @@ const TextArea: React.FC<IProps> = ({label, placeholder, id, name, setData}) => 
       {
         label &&
           <label>{label}</label>
+      }
+      {
+        errors &&
+          <ErrorWrapper>
+            {errors.map((error) => {
+              return (
+                <Error>{error}</Error>
+              )
+            })}
+          </ErrorWrapper>
       }
       <DescriptionInput
         id={id}

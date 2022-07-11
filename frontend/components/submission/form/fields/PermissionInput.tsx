@@ -2,12 +2,17 @@ import styled from 'styled-components';
 import NavIcons from '../../../layout/navigation/NavIcons';
 
 interface IProps {
-    id: string;
-    setData: (inputData: Object) => void;
-  }
+  id: string;
+  setData: (inputData: Object) => void;
+  errors?: string[];
+}
 
-const Wrapper = styled.div`
-  background: #f1f1f5f9;
+interface IWrapper {
+  error: boolean;
+}
+
+const Wrapper = styled.div<IWrapper>`
+  background: ${props => props.error == true ? '#FCA5A5' : '#f1f1f5f9;'};
   padding: 2rem;
   margin-top: .5rem;
   margin-bottom: 1.5rem;
@@ -16,6 +21,24 @@ const Wrapper = styled.div`
   align-items: center;
   border-radius: 12px;
   width: 100%;
+  ${props => props.error == true ? 'color: #F8FAFC' : null};
+  ${props => props.error == true ? `
+    span {
+      color: #7C2D12;
+      font-weight: bold;
+    }
+    label {
+      color: #7C2D12;
+    }
+    p {
+      color: #991B1B;
+    }
+  ` : `
+    span {
+      font-weight: bold;
+      color: red;
+    }
+  `}
 `
 
 const PermissionLabel = styled.label`
@@ -23,6 +46,7 @@ const PermissionLabel = styled.label`
   align-items: center;
   margin-bottom: .4rem !important;
   padding: 0;
+  font-weight: bold;
 
   svg {
     width: 24px;
@@ -30,15 +54,15 @@ const PermissionLabel = styled.label`
   }
 `
 
-const PermissionInput: React.FC<IProps> = ({id, setData}) => {
+const PermissionInput: React.FC<IProps> = ({id, setData, errors}) => {
     const setInput = (e: React.ChangeEvent) => {
       let value = (e.currentTarget as HTMLInputElement).checked;
       setData({[id]: value});
     }
   return (
-    <Wrapper>
+    <Wrapper {...(errors ? {error: true} : {error: false})}>
       <PermissionLabel>Permission {NavIcons.justiceIcon}</PermissionLabel>
-      <p>You must have permission to share this content. <span style={{color: 'red', whiteSpace: 'nowrap'}}>Do not leak.</span></p>
+      <p>You must have permission to share this content. <span>Do not leak.</span></p>
         <PermissionLabel>
           <br />
           I have permission to share this media.

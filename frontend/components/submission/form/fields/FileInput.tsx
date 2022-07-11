@@ -1,20 +1,42 @@
 import React from "react";
 import styled from "styled-components";
 import NavIcons from "../../../layout/navigation/NavIcons";
+import { Error } from "./TextInput";
 
 interface IProps {
   id: string;
   setData: (inputData: Object) => void;
+  errors?: string[];
 }
 
-const UploadWrapper = styled.div`
+interface IUploadWrapper {
+  error: boolean;
+}
+
+const UploadWrapper = styled.div<IUploadWrapper>`
   display: flex;
   border-radius: 12px;
-  background: #94a3b8;
+  background: ${props => props.error == true ? '#FCA5A5' : '#94a3b8'};
   margin-top: .5rem;
   margin-bottom: 1.5rem;
   align-items: center;
   width: 100%;
+  ${props => props.error == true ? `
+    svg {
+      width: 24px;
+      margin-left: 2rem;
+      color: #7C2D12;
+    }
+    input {
+      color: #7C2D12;
+    }
+  ` : `
+    svg {
+      width: 24px;
+      margin-left: 2rem;
+      color: white;
+    }
+  `}
 
   * {
     position: absolute;
@@ -22,12 +44,12 @@ const UploadWrapper = styled.div`
 
   &:hover {
     background: #64748b;
-  }
-
-  svg {
-    width: 24px;
-    margin-left: 2rem;
-    color: white;
+    svg {
+      color: white;
+    }
+    input {
+      color: white;
+    }
   }
 `
 
@@ -56,7 +78,7 @@ const Upload = styled.input`
   }
 `
 
-const FileInput: React.FC<IProps> = ({id, setData}) => {
+const FileInput: React.FC<IProps> = ({id, setData, errors}) => {
   const setInput = (e: React.ChangeEvent) => {
     if ((e.currentTarget as HTMLInputElement).files !== null) {
       let value = (e.currentTarget as HTMLInputElement).files![0];
@@ -64,9 +86,17 @@ const FileInput: React.FC<IProps> = ({id, setData}) => {
     }
   }
   return (
-    <UploadWrapper>
-      {NavIcons.fileIcon}<Upload type="file" id="file" onChange={setInput} />
-    </UploadWrapper>
+    <>
+        {
+          errors &&
+            <Error>{errors[0]}</Error>
+        }
+      <UploadWrapper
+        {...(errors ? {error: true} : {error: false})}
+      >
+        {NavIcons.fileIcon}<Upload type="file" id="file" onChange={setInput} />
+      </UploadWrapper>
+    </>
   )
 }
 

@@ -7,6 +7,7 @@ interface IProps {
   type: string;
   id: string;
   name?: string;
+  errors?: string[];
   setData: (inputData: Object) => void;
 }
 
@@ -25,8 +26,16 @@ const Input = styled.input`
     filter: drop-shadow(0 0 4px #e2e8f0);
   }
 `
+export const ErrorWrapper = styled.div`
+  display: inline-flex;
+  gap: 10px;
+`
 
-const TextInput: React.FC<IProps> = ({label, placeholder, type, id, name, setData}) => {
+export const Error = styled.label`
+  color: red;
+`
+
+const TextInput: React.FC<IProps> = ({label, placeholder, type, id, name, setData, errors}) => {
   const setInput = (e: React.ChangeEvent) => {
     let value = (e.currentTarget as HTMLInputElement).value;
     setData({[id]: value});
@@ -36,6 +45,10 @@ const TextInput: React.FC<IProps> = ({label, placeholder, type, id, name, setDat
       {
         label &&
           <label>{label}</label>
+      }
+      {
+        errors &&
+        <label style={{color: 'red'}}>{errors[0]}</label>
       }
       <Input
         type={type}

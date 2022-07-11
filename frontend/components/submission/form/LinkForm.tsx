@@ -23,6 +23,15 @@ interface IFormData {
   [key: string]: any;
 }
 
+interface IFormErrors {
+  title: string[] | null;
+  description: string[] | null;
+  link: string[] | null;
+  permission: string[] | null;
+  private: string[] | null;
+  [key: string]: any;
+}
+
 const LinkForm: React.FC<IProps> = ({visibility, setSelection, requestId}) => {
   const Router = useRouter();
   const [formData, setFormData] = useState<IFormData>({
@@ -32,6 +41,13 @@ const LinkForm: React.FC<IProps> = ({visibility, setSelection, requestId}) => {
     "permission": null,
     "private": null,
     "request_id": requestId
+  });
+  const [formErrors, setFormErrors] = useState<IFormErrors>({
+    "title": null,
+    "description": null,
+    "link": null,
+    "permission": null,
+    "private": null
   });
 
   const setData = (inputData: Object) => {
@@ -58,8 +74,18 @@ const LinkForm: React.FC<IProps> = ({visibility, setSelection, requestId}) => {
         Router.push('/');
       })
       .catch(res => {
-        console.log('Fail!', res)
-      })
+        let errors = Object.assign({}, formErrors);
+        // clear old errors
+        for (let [key, value] of Object.entries(formErrors)) {
+          errors[key] = null;
+        }
+        setFormErrors(errors);
+        // set new errors
+        for (let [key, value] of Object.entries(res.response.data)) {
+          errors[key] = value;
+        }
+        setFormErrors(errors);
+      });
   }
 
   return (
@@ -70,21 +96,25 @@ const LinkForm: React.FC<IProps> = ({visibility, setSelection, requestId}) => {
             type='text'
             id='title'
             setData={setData}
+            {...(formErrors.title ? {errors: formErrors.title} : {})}
           />
           <TextArea
             label="Description"
             id="description"
             setData={setData}
+            {...(formErrors.description ? {errors: formErrors.description} : {})}
           />
           <TextInput
             label="Link"
             type='text'
             id='link'
             setData={setData}
+            {...(formErrors.link ? {errors: formErrors.link} : {})}
           />
           <PermissionInput
             id="permission"
             setData={setData}
+            {...(formErrors.permission ? {errors: formErrors.permission} : {})}
           />
           <PrivateInput
             id="private"
